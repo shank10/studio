@@ -1,3 +1,7 @@
+
+"use client";
+
+import { useState, useEffect } from 'react'; // Added useState, useEffect
 import { PageHeader } from '@/components/shared/PageHeader';
 import { MealTracker } from '@/components/dashboard/MealTracker';
 import { WaterTracker } from '@/components/dashboard/WaterTracker';
@@ -10,15 +14,19 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 
 export default function TodayPage() {
-  const today = new Date();
-  const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = today.toLocaleDateString(undefined, options);
+  const [clientFormattedDate, setClientFormattedDate] = useState<string>('Loading date...');
+
+  useEffect(() => {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    setClientFormattedDate(today.toLocaleDateString(undefined, options));
+  }, []);
 
   return (
     <div className="space-y-6">
       <PageHeader 
         title="Today's Dashboard" 
-        description={formattedDate}
+        description={clientFormattedDate} // Use clientFormattedDate state
         actions={
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> Add New Task

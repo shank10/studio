@@ -1,3 +1,4 @@
+
 "use client";
 
 import { CalendarClock } from 'lucide-react';
@@ -5,6 +6,7 @@ import { SectionCard } from '@/components/shared/SectionCard';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Task } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from 'react'; // Added useState and useEffect
 
 const mockScheduledTasks: Task[] = [
   { id: 'event1', description: 'Team Standup Meeting', scheduledDateTime: new Date(new Date().setHours(9,0,0,0)).toISOString(), durationMinutes: 30, isCompleted: false },
@@ -21,6 +23,12 @@ const formatTime = (dateString?: string) => {
 }
 
 export function DailyCalendarView() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const todayEvents = mockScheduledTasks
     .filter(task => task.scheduledDateTime && new Date(task.scheduledDateTime).toDateString() === new Date().toDateString())
     .sort((a, b) => new Date(a.scheduledDateTime!).getTime() - new Date(b.scheduledDateTime!).getTime());
@@ -37,7 +45,7 @@ export function DailyCalendarView() {
                 <div>
                   <p className="text-sm font-medium">{event.description}</p>
                   <p className="text-xs text-muted-foreground">
-                    {formatTime(event.scheduledDateTime)} ({event.durationMinutes} min)
+                    {isClient ? formatTime(event.scheduledDateTime) : '...'} ({event.durationMinutes} min)
                   </p>
                 </div>
                 {event.isCompleted && <Badge variant="secondary">Done</Badge>}
