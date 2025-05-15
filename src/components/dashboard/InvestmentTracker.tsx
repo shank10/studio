@@ -193,7 +193,7 @@ export function InvestmentTracker() {
                   </TableCell>
                   <TableCell>{new Date(investment.date).toLocaleDateString()}</TableCell>
                   <TableCell>{investment.description}</TableCell>
-                  <TableCell className="text-right">${investment.amount.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">₹{investment.amount.toFixed(2)}</TableCell>
                   <TableCell className="text-xs">{investment.comments}</TableCell>
                    <TableCell className="text-center space-x-1">
                     <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-primary" onClick={() => openEditInvestmentDialog(investment)}>
@@ -212,7 +212,7 @@ export function InvestmentTracker() {
       {investments.length > 0 && (
         <div className="mt-4 pt-2 border-t text-right font-semibold">
           Total Invested: ${totalInvested.toFixed(2)}
-        </div>
+        </div> 
       )}
 
       {/* Edit Investment Dialog */}
