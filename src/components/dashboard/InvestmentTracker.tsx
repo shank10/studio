@@ -45,11 +45,12 @@ export function InvestmentTracker() {
       amount: parseFloat(amount),
       comments,
     };
-    setInvestments(prev => [newInvestment, ...prev]);
+    setInvestments(prev => [newInvestment, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     setDescription('');
     setAmount('');
     setComments('');
     setDate(new Date().toISOString().split('T')[0]);
+    // Dialog will close due to DialogClose asChild on the submit button
   };
   
   const handleDeleteInvestment = (id: string) => {
@@ -104,7 +105,7 @@ export function InvestmentTracker() {
         inv.id === currentEditingInvestment.id 
         ? { ...inv, description: editDescription, amount: parseFloat(editAmount), comments: editComments, date: editDate } 
         : inv
-    ));
+    ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     setIsEditDialogOpen(false);
     setCurrentEditingInvestment(null);
   };
@@ -245,3 +246,5 @@ export function InvestmentTracker() {
     </SectionCard>
   );
 }
+
+    

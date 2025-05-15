@@ -45,13 +45,12 @@ export function ExpenseTracker() {
       amount: parseFloat(amount),
       type: type as ExpenseType,
     };
-    setExpenses(prev => [newExpense, ...prev]);
+    setExpenses(prev => [newExpense, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     setDescription('');
     setAmount('');
     setType('');
     setDate(new Date().toISOString().split('T')[0]);
-    // Note: DialogClose is usually part of the form, here we might need to ensure the dialog closes on successful submit.
-    // This can be handled by DialogClose within the form or programmatically closing if Dialog has `open` and `onOpenChange` props.
+    // Dialog will close due to DialogClose asChild on the submit button
   };
 
   const handleDeleteExpense = (id: string) => {
@@ -106,7 +105,7 @@ export function ExpenseTracker() {
         exp.id === currentEditingExpense.id 
         ? { ...exp, description: editDescription, amount: parseFloat(editAmount), type: editType as ExpenseType, date: editDate } 
         : exp
-    ));
+    ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
     setIsEditDialogOpen(false);
     setCurrentEditingExpense(null);
   };
@@ -149,7 +148,7 @@ export function ExpenseTracker() {
                 </div>
                 <div>
                   <Label htmlFor="exp-type-add">Type</Label>
-                  <Select value={type} onValueChange={(value) => setType(value as ExpenseType)} > 
+                  <Select value={type} onValueChange={(value) => setType(value as ExpenseType)} required> 
                     <SelectTrigger id="exp-type-add"><SelectValue placeholder="Select type" /></SelectTrigger>
                     <SelectContent>
                       {EXPENSE_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
@@ -258,3 +257,5 @@ export function ExpenseTracker() {
     </SectionCard>
   );
 }
+
+    
